@@ -3,11 +3,16 @@ version: "3.9"
 volumes:
   pde-spring-pg-workspace:
   pde-spring-pg-dotfiles-lvim:
+  pde-spring-pg-sdk:
+  pde-spring-pg-coursier:
 
 services:
   ide:
     container_name: pde-spring-pg 
-    image: ${BASE_IMAGE_TAG}
+    build:
+      context: .
+      args:
+        BASE_IMAGE_TAG: ${BASE_IMAGE_TAG}
     command: 
       - /bin/bash
       - -c 
@@ -23,6 +28,8 @@ services:
       - ~/.ssh/:/root/.ssh/
       - /var/run/docker.sock:/var/run/docker.sock 
       - pde-spring-pg-workspace:/workspace
+      - pde-spring-pg-sdk:/root/.sdkman/candidates
+      - pde-spring-pg-coursier:/root/.local/share/coursier/bin
       # - pde-spring-pg-dotfiles-lvim:/
     ports:
       - "80:8080"
